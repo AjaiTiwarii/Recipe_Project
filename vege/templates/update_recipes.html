@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+
+<body class="bg-light text-dark">
+
+    <div class="container mt-5">
+        <div class="card p-4 shadow-sm">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h2 class="mb-4">Update Recipe</h2>
+                <hr>
+                <div class="form-group">
+                    <label for="recipe_name">Recipe Name:</label>
+                    <input type="text" id="recipe_name" name="recipe_name"  value="{{update_recipes.recipe_name}}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipe_description">Recipe Description:</label>
+                    <textarea id="recipe_description" name="recipe_description" rows="10" class="form-control" required>{{update_recipes.recipe_description}}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="recipe_image">Recipe Image:</label>
+                    <input type="file" id="recipe_image" name="recipe_image" class="form-control-file">
+                </div>
+                <button type="submit" class="btn btn-success">Update Recipe</button>
+            </form>
+        </div>
+    </div>
+
+    
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

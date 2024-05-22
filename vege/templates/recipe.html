@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+
+<body class="bg-light text-dark">
+
+    <div class="container mt-5">
+        <div class="card p-4 shadow-sm">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h2 class="mb-4">Add Recipe</h2>
+                <hr>
+                <div class="form-group">
+                    <label for="recipe_name">Recipe Name:</label>
+                    <input type="text" id="recipe_name" name="recipe_name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipe_description">Recipe Description:</label>
+                    <textarea id="recipe_description" name="recipe_description" rows="10" class="form-control"
+                        required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="recipe_image">Recipe Image:</label>
+                    <input type="file" id="recipe_image" name="recipe_image" class="form-control-file">
+                </div>
+                <button type="submit" class="btn btn-success">Add Recipe</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h2>Recipe List</h2>
+        <!-- Search box with button -->
+        <form >
+            <div class="form-group d-flex">
+                <input type="text" id="searchBox" name="search" class="form-control" placeholder="Search for recipes...">
+                <button id="searchButton" class="btn btn-primary ml-2">Search</button>
+            </div>
+        </form>
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>S. No.</th>
+                    <th>Recipe Name</th>
+                    <th>Recipe Description</th>
+                    <th>Recipe Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="recipeTableBody">
+                {% for recipe in recipes %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ recipe.recipe_name }}</td>
+                    <td>{{ recipe.recipe_description }}</td>
+                    <td>
+                        {% if recipe.recipe_image %}
+                        <img src="/media/{{recipe.recipe_image}}" alt="{{ recipe.recipe_name }}" class="img-fluid">
+                        {% else %}
+                        No Image
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/delete-recipe/{{recipe.id}}" class="btn btn-danger m-2">Delete</a>
+                        <a href="/update-recipe/{{recipe.id}}" class="btn btn-success">Update</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
