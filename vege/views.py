@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
+from django.contrib.auth.models import User
+from django.contrib import messages
+
 
 # Create your views here.
 
@@ -75,3 +78,35 @@ def update_recipe(request, id):
     context = {'update_recipes' : query}
 
     return render(request, 'update_recipes.html', context)
+
+
+def login_page(request):
+    return render(request, 'login.html')
+
+
+
+def register(request):
+    if request.method == "POST":
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Check for existing username
+        if User.objects.filter(username=username).exists():
+            messages.info(request, 'Username already taken')
+            return render(request, 'register.html')
+
+        # Create the user using create_user method which hashes the password
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            first_name=first_name,
+            last_name=last_name
+        )
+
+        messages.info(request, 'Account created Successfully')
+
+        return redirect('/register/')
+
+    return render(request, 'register.html')
