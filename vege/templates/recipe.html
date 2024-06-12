@@ -25,10 +25,68 @@
         .delete-button:hover {
             background-color: #e53935;
         }
+
+        /* Custom Navbar Styling */
+        .navbar-custom {
+            background-color: #5c6064;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-custom .navbar-brand {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .navbar-custom .nav-link {
+            color: #fff;
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: #ffc107;
+        }
+
+        .btn-custom {
+            background-color: #dc3545;
+            color: #fff;
+            border-color: #dc3545;
+        }
+
+        .btn-custom:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        /* Navbar-toggler-icon Styling */
+        .navbar-custom .navbar-toggler {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar-custom .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        }
+
+
+
     </style>
 </head>
 
 <body class="bg-light text-dark">
+
+    <!-- Navbar with username and logout button -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <a class="navbar-brand" href="#">{{ request.user.username }}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-custom" href="/logout/">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
     <div class="container mt-5">
         <div class="card p-4 shadow-sm">
@@ -57,9 +115,10 @@
     <div class="container mt-5">
         <h2>Recipe List</h2>
         <!-- Search box with button -->
-        <form >
+        <form>
             <div class="form-group d-flex">
-                <input type="text" id="searchBox" name="search" class="form-control" placeholder="Search for recipes...">
+                <input type="text" id="searchBox" name="search" class="form-control"
+                    placeholder="Search for recipes...">
                 <button id="searchButton" class="btn btn-primary ml-2">Search</button>
             </div>
         </form>

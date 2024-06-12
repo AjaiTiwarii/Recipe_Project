@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth import authenticate , login, logout
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -10,6 +12,8 @@ from django.contrib import messages
 def home(request):
     return HttpResponse("<h1>Home page of my recipe project</h1>")
 
+
+@login_required(login_url="/login/")
 def recipe(request):
 
     # data = request.POST # POST method se hum log data frontend se backend pr laate h
@@ -46,7 +50,7 @@ def recipe(request):
 
     return render(request, 'recipe.html', context)
 
-
+@login_required(login_url="/login/")
 def delete_recipe(request, id):
 
     query = Recipe.objects.get(id = id)
@@ -54,7 +58,7 @@ def delete_recipe(request, id):
     return redirect('/recipes/')
 
 
-
+@login_required(login_url="/login/")
 def update_recipe(request, id):
     query = Recipe.objects.get(id = id)
 
@@ -81,7 +85,33 @@ def update_recipe(request, id):
 
 
 def login_page(request):
+
+    if request.method == "POST":
+
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if not User.objects.filter(username = username).exists():
+            messages.error(request, 'Invalid Username')
+            return redirect('/login/')
+        
+        user = authenticate(username = username, password = password)
+
+        if user is None:
+            messages.error(request, 'Invalid Password')
+            return redirect('/login/')
+        
+        else :
+            login(request , user)
+            return redirect('/recipes/')
+
+
     return render(request, 'login.html')
+
+
+def logout_page(request):
+    logout(request)
+    return redirect('/login/')
 
 
 
@@ -100,10 +130,13 @@ def register(request):
         # Create the user using create_user method which hashes the password
         user = User.objects.create_user(
             username=username,
-            password=password,
+            #password=password,
             first_name=first_name,
             last_name=last_name
         )
+
+        user.set_password(password)
+        user.save()
 
         messages.info(request, 'Account created Successfully')
 
